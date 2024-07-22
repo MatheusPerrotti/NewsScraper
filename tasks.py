@@ -50,6 +50,8 @@ def baixar_imagem(url, nome_arquivo):
 
 class NewsScraper:
     def __init__(self, query, time_frame=1):
+        if time_frame == 0:
+            time_frame = 1
         options = Options()
         options.add_argument('--headless')
         options.add_argument('--no-sandbox')
