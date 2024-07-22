@@ -13,15 +13,18 @@ from RPA.Robocorp.WorkItems import WorkItems
 
 
 def date_parser(item):
-    if '.' in item:
-        text = item.replace(',', '.').split('.')
+    if 'ago' in item:
+        return date.today()
     else:
-        text = item.replace(' ', '.', 1).replace(',', '.').split('.')
-    months = {
-        'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
-        'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
-    }
-    return date(int(text[2].replace(' ', '')), months[text[0][0:3]], int(text[1].replace(' ', '')))
+        if '.' in item:
+            text = item.replace(',', '.').split('.')
+        else:
+            text = item.replace(' ', '.', 1).replace(',', '.').split('.')
+        months = {
+            'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6,
+            'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12
+        }
+        return date(int(text[2].replace(' ', '')), months[text[0][0:3]], int(text[1].replace(' ', '')))
 
 
 def months_to(end, start):
@@ -70,7 +73,7 @@ class NewsScraper:
         page = 1
         current_url = driver.current_url
         self.data = []
-        while months_to(date.today(), last_date) < time_frame:
+        while months_to(date.today(), last_date) <= time_frame:
             for new in news:
                 title_description = new.text.split('\n')[0] + ' ' + new.text.split('\n')[1]
                 line = []
