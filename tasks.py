@@ -65,8 +65,12 @@ class NewsScraper:
     def __init__(self, query, time_frame=1):
         if time_frame == 0:
             time_frame = 1
+        options = [
+            '--no-sandbox',
+            '--disable-dev-shm-usage'
+        ]
         self.browser = Selenium()
-        self.browser.open_available_browser('https://www.latimes.com')
+        self.browser.open_available_browser('https://www.latimes.com',options=options,headless=True)
         assert "Times" in self.browser.get_title()
         # Search for the query
         self.browser.click_button('//html/body/ps-header/header/div[2]/button')
@@ -123,10 +127,12 @@ class NewsScraper:
             
 @task
 def main():
-    work_items = WorkItems()
-    work_items.get_input_work_item()
-    query = work_items.get_work_item_variable("query")
-    time_frame = work_items.get_work_item_variable("time_frame")
+    # work_items = WorkItems()
+    # work_items.get_input_work_item()
+    # query = work_items.get_work_item_variable("query")
+    # time_frame = work_items.get_work_item_variable("time_frame")
+    query='Vatican'
+    time_frame=2
     bot = NewsScraper(query,time_frame)
     bot.save()
 
